@@ -1,4 +1,4 @@
-package com.isaac.contactify.repo;
+package com.isaac.contactify.repository;
 
 import com.isaac.contactify.domain.Contact;
 import org.springframework.data.jpa.repository.JpaRepository;
