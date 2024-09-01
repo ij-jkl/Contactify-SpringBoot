@@ -34,28 +34,36 @@ public class ContactService {
     private ContactRepository contactRepository;
 
     public Page<Contact> getAllContacts(int page,int size) {
+        log.info("Fetching All the Contacts with page {} and size {}", page, size);
         return contactRepository.findAll(PageRequest.of(page, size, Sort.by("name")));
+
     }
 
     public Contact getContact(String id){
+        log.info("Fetching contact with ID : {}", id);
         return contactRepository.findById(id).orElseThrow(() -> new RuntimeException("Contact Not Found. "));
     }
 
     public Contact createContact(Contact contact){
+        log.info("Creating contact : {}", contact);
         return contactRepository.save(contact);
     }
 
     public void deleteContact(Contact contact){
+        log.info("Deleting contact : {}",contact);
         contactRepository.delete(contact);
+        log.info("Deleted contact : {}", contact);
     }
 
     // We upload the Photo for the contact with the ID passed. We update his image url, we save the contact and we return the new Url
     public String uploadPhoto(String id, MultipartFile file){
+        log.info("Uploading photo for contact with ID : {}", id);
         Contact contact = getContact(id);
         // We are passing the ID of the contact and the File which is the image
         String photoUrl = photoFunction.apply(id, file);
         contact.setImageUrl(photoUrl);
         contactRepository.save(contact);
+        log.info("Uploaded photo and updated contact imageUrl to : {}", photoUrl);
 
         return photoUrl;
     }
