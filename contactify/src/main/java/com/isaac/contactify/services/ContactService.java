@@ -70,11 +70,22 @@ public class ContactService {
         String fileName = id + fileExtension.apply(image.getOriginalFilename());
         try {
             Path fileStorageLocation = Paths.get(PHOTO_DIRECTORY).toAbsolutePath().normalize();
-            if (!Files.exists(fileStorageLocation)) { Files.createDirectories(fileStorageLocation); }
+            log.info("File storage location: {}", fileStorageLocation);
+
+            if (!Files.exists(fileStorageLocation)) {
+                log.info("Directory does not exist. Creating directories...");
+                Files.createDirectories(fileStorageLocation);
+            }
+
             Files.copy(image.getInputStream(), fileStorageLocation.resolve(fileName), REPLACE_EXISTING);
-            return ServletUriComponentsBuilder.fromCurrentContextPath().path("/contacts/image/" + id + fileName).toUriString();
+            log.info("File saved successfully: {}", fileName);
+
+            return ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/contacts/image/" + id + fileName)
+                    .toUriString();
         } catch (Exception e) {
-            throw new RuntimeException("Unable to save the Image");
+            log.error("Error saving image: {}", e.getMessage(), e);
+            throw new RuntimeException("Unable to save the Image: " + e.getMessage());
         }
     };
 }
