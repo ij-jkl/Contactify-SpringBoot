@@ -1,8 +1,10 @@
 package com.isaac.contactify.controller;
 
+import com.isaac.contactify.constant.Constant;
 import com.isaac.contactify.domain.Contact;
 import com.isaac.contactify.services.ContactService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 @RequestMapping("/contacts")
 @RequiredArgsConstructor
 public class ContactController {
+    @Autowired
     private final ContactService contactService;
     private static final String PHOTO_DIRECTORY = "/path/to/photo/directory/";
 
@@ -45,8 +48,8 @@ public class ContactController {
         return ResponseEntity.ok().body(contactService.uploadPhoto(id, file));
     }
 
-    @GetMapping(path = "/image/{filename}", produces = {IMAGE_PNG_VALUE, IMAGE_JPEG_VALUE})
-    public byte[] getPhoto(@PathVariable(value = "filename") String filename) throws IOException{
-        return Files.readAllBytes(Paths.get(PHOTO_DIRECTORY + filename));
+    @GetMapping(path = "/image/{filename}", produces = { IMAGE_PNG_VALUE, IMAGE_JPEG_VALUE })
+    public byte[] getPhoto(@PathVariable("filename") String filename) throws IOException {
+        return Files.readAllBytes(Paths.get(Constant.PHOTO_DIRECTORY + filename));
     }
 }

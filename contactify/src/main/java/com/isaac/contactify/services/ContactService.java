@@ -81,7 +81,7 @@ public class ContactService {
             log.info("File saved successfully: {}", fileName);
 
             return ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/contacts/image/" + id + fileName)
+                    .path("/contacts/image/" + fileName)
                     .toUriString();
         } catch (Exception e) {
             log.error("Error saving image: {}", e.getMessage(), e);
