@@ -52,4 +52,9 @@ public class ContactController {
     public byte[] getPhoto(@PathVariable("filename") String filename) throws IOException {
         return Files.readAllBytes(Paths.get(Constant.PHOTO_DIRECTORY + filename));
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteContact(@PathVariable(value = "id") String id){
+        contactService.deleteContact(contactService.getContact(id));
+    }
 }
